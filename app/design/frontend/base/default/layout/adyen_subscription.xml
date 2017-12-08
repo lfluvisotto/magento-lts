@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+-->
+
+<layout version="0.1.0">
+    <PRODUCT_TYPE_adyen_subscription translate="label" module="adyen_subscription">
+        <label>Catalog Product View > Adyen Subscription</label>
+
+        <reference name="product.info.options.wrapper">
+            <block type="adyen_subscription/catalog_product_view_subscription"
+                   name="product.info.options.adyen_subscription"
+                   as="adyen_subscription_options"
+                   template="adyen_subscription/catalog/product/view/subscription.phtml"/>
+        </reference>
+    </PRODUCT_TYPE_adyen_subscription>
+
+    <customer_logged_in>
+        <!-- @todo remove dependency on ho_bootstrap -->
+        <!--<reference name="top.links">-->
+            <!--<action method="addLink" translate="label" module="adyen_subscription">-->
+                <!--<label>My Subscriptions</label>-->
+                <!--<url helper="ho_bootstrap/getUrl"><path>adyen_subscription/customer/subscriptions</path></url>-->
+                <!--<title>My Subscriptions</title>-->
+                <!--<prepare/><urlParams/>-->
+                <!--<position>60</position>-->
+            <!--</action>-->
+        <!--</reference>-->
+    </customer_logged_in>
+
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="adyen_subscription">
+                <name>subscriptions</name>
+                <path>adyen_subscription/customer/subscriptions</path>
+                <label>My Subscriptions</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <adyen_subscription_customer_subscriptions translate="label">
+        <label>Customer My Account Subscriptions</label>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="adyen_subscription/customer_subscription_list" name="adyen_subscription_customer_subscriptions_list"
+                   template="adyen_subscription/customer/subscription/list.phtml" />
+        </reference>
+        <reference name="root">
+            <action method="setHeaderTitle" translate="title" module="adyen_subscription">
+                <title>My Subscriptions</title>
+            </action>
+        </reference>
+    </adyen_subscription_customer_subscriptions>
+
+    <adyen_subscription_customer_view translate="label">
+        <label>Customer My Account View Subscription</label>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="adyen_subscription/customer_subscription_view" name="adyen_subscription_customer_subscriptions_view"
+                   template="adyen_subscription/customer/subscription/view.phtml"/>
+        </reference>
+    </adyen_subscription_customer_view>
+
+    <adyen_subscription_customer_cancel>
+        <label>Cancel Subscription</label>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="adyen_subscription/customer_subscription_cancel" name="adyen_subscription_customer_subscriptions_cancel"
+                   template="adyen_subscription/customer/subscription/cancel.phtml"/>
+        </reference>
+    </adyen_subscription_customer_cancel>
+
+</layout>

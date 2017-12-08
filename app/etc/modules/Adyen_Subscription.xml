@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+-->
+<config>
+    <modules>
+        <Adyen_Subscription>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Adyen_Payment />
+                <Mage_Bundle/>
+            </depends>
+        </Adyen_Subscription>
+    </modules>
+</config>

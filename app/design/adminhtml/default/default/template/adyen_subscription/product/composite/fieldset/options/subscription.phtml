@@ -1,0 +1,44 @@
+<?php
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+?>
+
+<?php /* @var $this Adyen_Subscription_Block_Catalog_Product_View_Subscription */ ?>
+<?php $options = Mage::helper('core')->decorateArray($this->getOptions()); ?>
+<?php if (count($options)): ?>
+    <div id="catalog_product_composite_configure_fields_subscription" class="<?php echo $this->getIsLastFieldset() ? 'last-fieldset' : '' ?>">
+        <h4><?php echo Mage::helper('catalog')->__('Adyen Subscription') ?></h4>
+        <div class="product-options">
+            <dl>
+                <select id="subscription-option" name="adyen_subscription">
+                    <?php if ($this->canOrderStandalone()): ?>
+                        <option value="none"><?=$this->__('None (standalone purchase)');?></option>
+                    <?php endif; ?>
+                    <?php foreach ($options as $option) : ?>
+                        <?php /** @var Adyen_Subscription_Model_Product_Subscription $option */ ?>
+                        <option value="<?=$option->getId();?>" <?=$this->_isSelected($option->getId()) ? 'selected="selected"' : ''; ?>><?php echo $option->getAdminLabel(); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </dl>
+        </div>
+    </div>
+<?php endif; ?>

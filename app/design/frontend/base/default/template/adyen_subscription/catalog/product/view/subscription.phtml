@@ -1,0 +1,102 @@
+<?php
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+
+/** @var $this Adyen_Subscription_Block_Catalog_Product_View_Subscription */
+
+$_coreHelper = $this->helper('core');
+?>
+<div class="fieldset giftcard-amount-form">
+    <dl>
+        <dt>
+            <label for="adyen_subscription" class="required"><em>*</em>
+                <?php echo Mage::helper('adyen_subscription')->__('Subscription'); ?>
+            </label>
+        </dt>
+        <dd>
+            <div class="input-box">
+                <ul id="adyen-subscription-list" class="options-list">
+                    <?php if ($this->canOrderStandalone()): ?>
+                        <li>
+                            <label>
+                                <input type="radio" id="adyen_subscription_none" name="adyen_subscription"
+                                       data-subscription-id="none" onchange="subscriptionOptions.reloadPrice()"
+                                       class="adyen-subscription-option validate-one-required-by-name" value="none"/>
+                                <?php echo $this->__('No subscription') ?>
+                            </label>
+                            <script type="text/javascript">
+                                $('adyen_subscription_none').advaiceContainer = 'adyen_subscription_advice';
+                            </script>
+                        </li>
+                    <?php endif; ?>
+                    <?php foreach ($this->getSubscriptionCollection() as $subscription): ?>
+                    <?php /** @var Adyen_Subscription_Model_Product_Subscription $subscription */ ?>
+                    <?php if (!$subscription->getShowOnFrontend()) continue; ?>
+                    <li>
+                        <label>
+                            <input type="radio" id="adyen_subscription_<?php echo  $subscription->getId(); ?>"
+                                   data-subscription-id="<?php echo  $subscription->getId(); ?>" onchange="subscriptionOptions.reloadPrice()"
+                                   name="adyen_subscription" class="adyen-subscription-option validate-one-required-by-name" value="<?php echo $subscription->getId(); ?>"
+                                   <?php if($this->isSubscriptionSelected($subscription)): ?>checked<?php endif; ?>
+                                />
+                            <?php echo $this->__($subscription->getFrontendLabel()); ?> <?php echo $_coreHelper->formatCurrency($subscription->getPrice()); ?>
+                        </label>
+                        <script type="text/javascript">
+                            $('adyen_subscription_<?php echo  $subscription->getId(); ?>').advaiceContainer = 'adyen_subscription_advice';
+                        </script>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+                <div id="adyen_subscription_advice"></div>
+            </div>
+        </dd>
+    </dl>
+</div>
+<script>
+    Product.SubscriptionOptions = Class.create();
+    Product.SubscriptionOptions.prototype = {
+        initialize: function (config) {
+            this.config = config;
+            this.reloadPrice();
+            document.observe("dom:loaded", this.reloadPrice.bind(this));
+        },
+        reloadPrice: function () {
+            var config = this.config;
+
+            $$('#adyen-subscription-list .adyen-subscription-option').each(function (element) {
+                var subscriptionId = element.readAttribute('data-subscription-id');
+
+                if (config[subscriptionId]) {
+                    var configOptions = config[subscriptionId];
+
+                    if (element.checked) {
+                        optionsPrice.addCustomPrices(subscriptionId, configOptions);
+                    } else {
+                        optionsPrice.addCustomPrices(subscriptionId, {price: 0});
+                    }
+                    optionsPrice.reload();
+                }
+            });
+        }
+    };
+    var subscriptionOptions = new Product.SubscriptionOptions(<?php echo $this->getJsonConfig() ?>);
+</script>

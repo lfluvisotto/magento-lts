@@ -1,0 +1,53 @@
+<?php
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+
+/** @var Adyen_Subscription_Block_Adminhtml_Subscription_View_Tabs_Scheduled_Totals $this */
+?>
+<table cellspacing="0" cellpadding="8" width="100%">
+    <tbody>
+        <?php echo $this->renderTotals(); ?>
+        <?php echo $this->renderTotals('footer'); ?>
+    </tbody>
+</table>
+<div class="divider"></div>
+<div class="order-totals-bottom">
+    <p>
+        <?php echo $this->__('Order will be automatically created at:') ?><br />
+        <strong><?php echo $this->getSubscription()->getScheduledAtFormatted(); ?></strong>
+    </p>
+    <?php if ($this->getSubscription()->canCreateOrder()): ?>
+    <p>
+        <?php echo $this->getButtonHtml(
+            Mage::helper('adyen_subscription')->__('Edit Scheduled Order'),
+            "setLocation('{$this->getUrl('*/*/editQuote', ['id' => $this->getSubscription()->getId()])}','edit_quote')",
+            'edit'
+        ); ?>
+        &nbsp;
+        <?php echo $this->getButtonHtml(
+            Mage::helper('adyen_subscription')->__('Create Order Now'),
+            "setLocation('{$this->getUrl('*/*/createOrder', ['id' => $this->getSubscription()->getId()])}')",
+            'add'
+        ); ?>
+    </p>
+    <?php endif; ?>
+</div>

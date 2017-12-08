@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+-->
+<config>
+    <menu>
+        <sales>
+            <children>
+                <recurring_profile>
+                    <disabled>1</disabled>
+                </recurring_profile>
+                <adyen_subscriptions translate="title" module="adyen_subscription">
+                    <title>Adyen Subscriptions</title>
+                    <action>*/subscription</action>
+                    <sort_order>100</sort_order>
+                </adyen_subscriptions>
+            </children>
+        </sales>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <sales>
+                        <children>
+                            <adyen_subscriptions translate="title">
+                                <title>Adyen Subscriptions</title>
+                            </adyen_subscriptions>
+                        </children>
+                    </sales>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <adyen_subscription translate="title">
+                                        <title>Adyen Subscriptions</title>
+                                    </adyen_subscription>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

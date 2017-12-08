@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+-->
+<config>
+    <sections>
+        <adyen_subscription translate="label" module="adyen_subscription">
+            <label>Adyen Subscriptions</label>
+            <tab>sales</tab>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <show_term_label translate="label">
+                            <label>Show Term Label</label>
+                            <tooltip><![CDATA[Renders a term label (ie. 'Every 6 months') after the custom Product Subscription label]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                        </show_term_label>
+                        <price_includes_tax translate="label">
+                            <label>Subscription Prices</label>
+                            <tooltip><![CDATA[Default is 'Including Tax'. If set to 'Excluding Tax', subscription item prices change when the tax percentage is adjusted.]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tax/system_config_source_priceType</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>20</sort_order>
+                        </price_includes_tax>
+                    </fields>
+                </general>
+                <subscription translate="label">
+                    <label>Subscription</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <cancel_reasons translate="label">
+                            <label>Cancel Reasons</label>
+                            <comment><![CDATA[Cancel Reason Code will be saved and will be visable in the history tab of the subscription]]></comment>
+                            <frontend_model>adyen_subscription/adminhtml_system_config_cancelReasons</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </cancel_reasons>
+                        <allowed_payment_methods translate="label">
+                            <label>Allowed payment methods</label>
+                            <tooltip>Select here the payment methods that you want to show to the shopper if they select a product with subscription</tooltip>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>20</sort_order>
+                            <source_model>adyen_subscription/system_config_source_allowedPaymentMethods</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowed_payment_methods>
+                        <debug translate="label">
+                            <label>Debug</label>
+                            <tooltip>This will write the results of the conjob to a log file. You can find this log file in your var/log directory</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug>
+                        <allow_cancel_subscription>
+                            <label>Cancel Subscription</label>
+                            <tooltip>Allow the shopper to cancel the subscription</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_cancel_subscription>
+                        <cancel_delete_orders>
+                            <label>Cancel orders of canceled subscriptions</label>
+                            <tooltip><![CDATA[Cancel the orders of a canceled subscription when the status is non-protected
+                                and the order is not completed yet]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cancel_delete_orders>
+                        <allow_pause_resume_subscription>
+                            <label>Pause/Resume Subscription</label>
+                            <tooltip>Allow the shopper to pause/resume the subscription</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_pause_resume_subscription>
+                        <pause_hold_orders>
+                            <label>Hold orders of paused subscriptions</label>
+                            <tooltip><![CDATA[Hold the orders of a paused subscription when the status is non-protected
+                                and the order is not completed yet]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pause_hold_orders>
+                        <retry_on_error>
+                            <label>Retry creating order</label>
+                            <tooltip>If the subscription has an error status don't try to create an order</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </retry_on_error>
+                        <retry_failed_payment>
+                            <label>Retry failed payment</label>
+                            <tooltip>If the payment of the subscription is failed do you want to retry this later</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </retry_failed_payment>
+                        <number_retry_failed_payment>
+                            <label>Number of retries for payment failure</label>
+                            <tooltip>How many times do you want to retry it (Keep empty for always)</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-number</validate>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><retry_failed_payment>1</retry_failed_payment></depends>
+                        </number_retry_failed_payment>
+                        <time_between_retry_failed_payment>
+                            <label>Time (in hours) between retries payment failure</label>
+                            <tooltip>When a payment failed how long do you want to wait for the next try. (Keep in mind that it will only be checked when cronjob is running) Keep this setting empty if you want it to be executed on the next cronjob </tooltip>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-number</validate>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><retry_failed_payment>1</retry_failed_payment></depends>
+                        </time_between_retry_failed_payment>
+                        <show_upcoming_orders>
+                            <label>Show upcoming orders</label>
+                            <tooltip>Show upcoming orders to the shopper. This will be visable inside the subscription overview.</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_upcoming_orders>
+                        <number_of_upcoming_orders>
+                            <label>Number of upcomming orders</label>
+                            <tooltip>How many upcomming order dates do you want to show to the shopper</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends><show_upcoming_orders>1</show_upcoming_orders></depends>
+                        </number_of_upcoming_orders>
+                        <cron_subscription_setting>
+                            <label>How often do you want the create subscription cron to run?</label>
+                            <tooltip>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </cron_subscription_setting>
+                        <cron_quote_setting>
+                            <label>How often do you want the create quote cron to run?</label>
+                            <tooltip>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </cron_quote_setting>
+                        <cron_order_setting>
+                            <label>How often do you want the create order to run?</label>
+                            <tooltip>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </cron_order_setting>
+                        <create_order_regard_time translate="label comment">
+                            <label>Use time for order creation</label>
+                            <tooltip><![CDATA[When set to no the order will be created as soon as the date is reached not waiting for the right time]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>130</sort_order>
+                        </create_order_regard_time>
+                    </fields>
+                </subscription>
+                <order translate="label">
+                    <label>Order</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <reorder_subscription translate="label">
+                            <label>Subscription at reorder</label>
+                            <tooltip><![CDATA[When set to Yes, the product subscriptions will be included in a reorder.
+                            Default is No, then a reorder of a subscription order will be a single order.]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                        </reorder_subscription>
+                        <protected_statuses translate="label">
+                            <label>Protected Statuses</label>
+                            <tooltip><![CDATA[Orders with one of these statuses won't be automatically canceled/put on hold]]></tooltip>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_processing</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </protected_statuses>
+                    </fields>
+                </order>
+                <advanced translate="label">
+                    <label>Advanced</label>
+                    <sort_order>90</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <schedule_quotes_term translate="label">
+                            <label>Schedule Quotes Term</label>
+                            <tooltip><![CDATA[Create quotes of subscriptions if schedule date is within now and this term. Default is P2W (2 weeks).]]></tooltip>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>10</sort_order>
+                            <comment><![CDATA[<b style="color:#eb5e00;">Important note: use the following notation:</b>
+                            <a target="_blank" href="http://php.net/manual/en/dateinterval.createfromdatestring.php">http://php.net/manual/en/dateinterval.createfromdatestring.php</a>]]></comment>
+                        </schedule_quotes_term>
+                    </fields>
+                </advanced>
+            </groups>
+        </adyen_subscription>
+        <sales>
+            <groups>
+                <totals_sort>
+                    <fields>
+                        <subscription_fee translate="label">
+                            <label>Adyen payment subscription fee</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>104</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </subscription_fee>
+                    </fields>
+                </totals_sort>
+            </groups>
+        </sales>
+    </sections>
+</config>

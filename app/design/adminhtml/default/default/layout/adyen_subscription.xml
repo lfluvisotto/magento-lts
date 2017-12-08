@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+-->
+<layout>
+    <!-- main layout definition that adds the column -->
+    <add_order_grid_column_handle>
+        <reference name="sales_order.grid">
+            <action method="addColumnAfter">
+                <columnId>created_subscription_id</columnId>
+                <arguments module="adyen_subscription" translate="header">
+                    <header>Created Subscription ID</header>
+                    <index>created_subscription_id</index>
+                    <type>integer</type>
+                </arguments>
+                <after>status</after>
+            </action>
+        </reference>
+    </add_order_grid_column_handle>
+    <!-- order grid action -->
+    <adminhtml_sales_order_grid>
+        <!-- apply the layout handle defined above -->
+        <update handle="add_order_grid_column_handle" />
+    </adminhtml_sales_order_grid>
+    <!-- order grid view action -->
+    <adminhtml_sales_order_index>
+        <!-- apply the layout handle defined above -->
+        <update handle="add_order_grid_column_handle" />
+    </adminhtml_sales_order_index>
+
+    <default>
+        <reference name="head">
+            <action method="addCss"><stylesheet>adyen_subscription/css/subscription.css</stylesheet></action>
+        </reference>
+    </default>
+
+    <adminhtml_catalog_product_edit>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>adyen_subscription/js/jquery-1.11.3.min.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>adyen_subscription/js/jquery-ui.min.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>adyen_subscription/js/subscription.js</name><params/></action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+
+    <adminhtml_customer_edit>
+        <reference name="customer_edit_tabs">
+            <action method="addTab"><name>customer_edit_tab_subscription</name><block>adyen_subscription/adminhtml_customer_edit_tab_subscription</block></action>
+        </reference>
+    </adminhtml_customer_edit>
+
+    <adminhtml_subscription_index>
+        <reference name="content">
+            <block type="adyen_subscription/adminhtml_subscription" name="adminhtml_ho_subscription.grid.container" />
+        </reference>
+    </adminhtml_subscription_index>
+
+    <adminhtml_subscription_view>
+        <reference name="content">
+            <block type="adyen_subscription/adminhtml_subscription_view" />
+        </reference>
+        <reference name="left">
+            <block type="adyen_subscription/adminhtml_subscription_view_tabs" name="subscription_view_tabs">
+                <block name="subscription_info_block"
+                       type="adyen_subscription/adminhtml_subscription_view_tabs_info"
+                       template="adyen_subscription/subscription/view/info.phtml">
+                    <block type="adyen_subscription/adminhtml_subscription_view_tabs_info_products" name="subscription_products"/>
+                </block>
+                <block name="subscription_scheduled_order_block"
+                       type="adyen_subscription/adminhtml_subscription_view_tabs_scheduled"
+                       template="adyen_subscription/subscription/view/scheduled/items.phtml">
+                    <block type="adyen_subscription/adminhtml_subscription_view_tabs_scheduled_info"
+                           name="info" template="adyen_subscription/subscription/view/scheduled/info.phtml" />
+                    <block type="adyen_subscription/adminhtml_subscription_view_tabs_scheduled_totals"
+                           name="order_totals" template="adyen_subscription/quote/totals.phtml" />
+                </block>
+                <action method="addTab"><name>subscription_info</name><block>subscription_info_block</block></action>
+                <action method="addTab"><name>subscription_scheduled_order</name><block>subscription_scheduled_order_block</block></action>
+                <action method="addTab"><name>subscription_past_orders</name><block>adyen_subscription/adminhtml_subscription_view_tabs_pastOrders</block></action>
+                <action method="addTab"><name>subscription_history</name><block>adyen_subscription/adminhtml_subscription_view_tabs_history</block></action>
+            </block>
+        </reference>
+    </adminhtml_subscription_view>
+
+    <adminhtml_subscription_customergrid>
+        <block type="adyen_subscription/adminhtml_customer_edit_tab_subscription" name="subscription.grid" output="toHtml"></block>
+    </adminhtml_subscription_customergrid>
+
+    <adminhtml_subscription_ordersgrid>
+        <block type="adyen_subscription/adminhtml_subscription_view_tabs_pastOrders" name="orders.grid" output="toHtml"></block>
+    </adminhtml_subscription_ordersgrid>
+
+    <adminhtml_subscription_historygrid>
+        <block type="adyen_subscription/adminhtml_subscription_view_tabs_history" name="history.grid" output="toHtml"></block>
+    </adminhtml_subscription_historygrid>
+
+    <adminhtml_subscription_cancel>
+        <reference name="content">
+            <block type="adyen_subscription/adminhtml_subscription_cancel" name="adyen_subscription_cancel" />
+        </reference>
+    </adminhtml_subscription_cancel>
+
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTabAfter">
+                <name>adyen_subscription_tab</name>
+                <block>adyen_subscription/adminhtml_catalog_product_tab_subscription</block>
+                <after>categories</after>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+
+    <adyen_subscription_active_quote_edit>
+        <remove name="sidebar"/>
+        <remove name="comment"/>
+        <remove name="gift_options"/>
+        <reference name="root">
+            <action method="addBodyClass"><class>adyen-subscription-active-quote-edit</class></action>
+        </reference>
+    </adyen_subscription_active_quote_edit>
+
+    <adminhtml_sales_order_create_index>
+        <reference name="totals">
+            <action method="setTemplate"><template>adyen_subscription/sales/create/totals.phtml</template></action>
+        </reference>
+        <reference name="data">
+            <block type="adminhtml/sales_order_create_shipping_address" template="adyen_subscription/sales/order/create/form/address.phtml" name="shipping_address" />
+            <block type="adminhtml/sales_order_create_billing_address" template="adyen_subscription/sales/order/create/form/address.phtml" name="billing_address" />
+        </reference>
+    </adminhtml_sales_order_create_index>
+
+    <adminhtml_sales_order_create_load_block_data>
+        <reference name="data">
+            <block type="adminhtml/sales_order_create_shipping_address" template="adyen_subscription/sales/order/create/form/address.phtml" name="shipping_address" />
+            <block type="adminhtml/sales_order_create_billing_address" template="adyen_subscription/sales/order/create/form/address.phtml" name="billing_address" />
+        </reference>
+    </adminhtml_sales_order_create_load_block_data>
+
+    <adminhtml_sales_order_create_load_block_shipping_address>
+        <reference name="content">
+            <block type="adminhtml/sales_order_create_shipping_address" template="adyen_subscription/sales/order/create/form/address.phtml" name="shipping_address" />
+        </reference>
+    </adminhtml_sales_order_create_load_block_shipping_address>
+
+    <adminhtml_sales_order_create_load_block_billing_address>
+        <reference name="content">
+            <block type="adminhtml/sales_order_create_billing_address" template="adyen_subscription/sales/order/create/form/address.phtml" name="billing_address" />
+        </reference>
+    </adminhtml_sales_order_create_load_block_billing_address>
+
+    <adminhtml_sales_order_create_load_block_totals>
+        <reference name="totals">
+            <action method="setTemplate"><template>adyen_subscription/sales/create/totals.phtml</template></action>
+        </reference>
+    </adminhtml_sales_order_create_load_block_totals>
+
+    <adminhtml_sales_order_view>
+        <reference name="order_tab_info">
+            <action method="unsetChild"><child>order_info</child></action>
+            <block type="adyen_subscription/adminhtml_sales_order_view_subscription"
+                   name="adyen_subscription_info"
+                   template="adyen_subscription/sales/order/view/subscription.phtml">
+                <action method="insert"><name>order_info</name></action>
+            </block>
+            <action method="insert">
+                <name>adyen_subscription_info</name>
+                <sibling>order_messages</sibling>
+                <after>1</after>
+                <alias>order_info</alias>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+
+    <PRODUCT_TYPE_simple>
+        <reference name="product.composite.fieldset">
+            <block type="adyen_subscription/catalog_product_view_subscription"
+                   before="product.composite.fieldset.options"
+                   name="product.composite.fieldset.subscription"
+                   template="adyen_subscription/product/composite/fieldset/options/subscription.phtml" />
+        </reference>
+    </PRODUCT_TYPE_simple>
+
+    <PRODUCT_TYPE_configurable>
+        <reference name="product.composite.fieldset">
+            <block type="adyen_subscription/catalog_product_view_subscription"
+                   before="product.composite.fieldset.options"
+                   name="product.composite.fieldset.subscription"
+                   template="adyen_subscription/product/composite/fieldset/options/subscription.phtml" />
+        </reference>
+    </PRODUCT_TYPE_configurable>
+
+    <PRODUCT_TYPE_bundle>
+        <reference name="product.composite.fieldset">
+            <block type="adyen_subscription/catalog_product_view_subscription"
+                   before="product.composite.fieldset.options"
+                   name="product.composite.fieldset.subscription"
+                   template="adyen_subscription/product/composite/fieldset/options/subscription.phtml" />
+        </reference>
+    </PRODUCT_TYPE_bundle>
+
+    <PRODUCT_TYPE_virtual>
+        <reference name="product.composite.fieldset">
+            <block type="adyen_subscription/catalog_product_view_subscription"
+                   before="product.composite.fieldset.options"
+                   name="product.composite.fieldset.subscription"
+                   template="adyen_subscription/product/composite/fieldset/options/subscription.phtml" />
+        </reference>
+    </PRODUCT_TYPE_virtual>
+</layout>

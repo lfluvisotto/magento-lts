@@ -1,0 +1,69 @@
+<?php
+/**
+ *                       ######
+ *                       ######
+ * ############    ####( ######  #####. ######  ############   ############
+ * #############  #####( ######  #####. ######  #############  #############
+ *        ######  #####( ######  #####. ######  #####  ######  #####  ######
+ * ###### ######  #####( ######  #####. ######  #####  #####   #####  ######
+ * ###### ######  #####( ######  #####. ######  #####          #####  ######
+ * #############  #############  #############  #############  #####  ######
+ *  ############   ############  #############   ############  #####  ######
+ *                                      ######
+ *                               #############
+ *                               ############
+ *
+ * Adyen Subscription module (https://www.adyen.com/)
+ *
+ * Copyright (c) 2015 H&O E-commerce specialists B.V. (http://www.h-o.nl/)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Adyen <magento@adyen.com>, H&O E-commerce specialists B.V. <info@h-o.nl>
+ */
+
+/** @var $this Adyen_Subscription_Block_Adminhtml_Sales_Order_View_Subscription */
+
+$_subscriptionQuoteAdd = $this->getSubscriptionQuoteAdditionalInfo();
+$_subscription = $this->getSubscription();
+?>
+<div class="box-right">
+    <!--Subscription Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo $this->__('Related Subscription') ?></h4>
+        </div>
+    </div>
+    <div class="fieldset">
+        <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Adyen Subscription ID') ?></label></td>
+                <td class="value">
+                    <a href="<?php echo $this->getUrl('*/subscription/view', ['id' => $this->getSubscription()->getId()]); ?>">
+                        <strong>#<?php echo $_subscription->getIncrementId(); ?></strong>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('adyen_subscription')->__('Adyen Subscription Status'); ?></label></td>
+                <td class="value">
+                    <strong><?php echo $_subscription->getStatusLabel($_subscription->getStatus());?></strong>
+                </td>
+            </tr>
+            <?php if ($_subscriptionQuoteAdd): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Period Date') ?></label></td>
+                <td class="value">
+                    <strong><?php echo $_subscription->getTermLabel(); ?></strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Schedule Date') ?></label></td>
+                <td class="value">
+                    <strong><?php echo $_subscriptionQuoteAdd->getScheduledAtFormatted(); ?></strong>
+                </td>
+            </tr>
+            <?php endif; ?>
+        </table>
+    </div>
+</div>
+<?php echo $this->getChildHtml(); ?>
